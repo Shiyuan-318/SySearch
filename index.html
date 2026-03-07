@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SySearch - 起始页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .logo {
+            width: 180px;
+            height: auto;
+            filter: drop-shadow(0 4px 20px rgba(255, 255, 255, 0.1));
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .search-container {
+            width: 100%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 18px 100px 18px 24px;
+            font-size: 18px;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .engine-select-wrapper {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .engine-select-btn {
+            width: 80px;
+            height: 44px;
+            border: none;
+            border-radius: 25px;
+            background: #1a1a2e;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0 28px 0 12px;
+            outline: none;
+            position: relative;
+            text-align: left;
+        }
+
+        .engine-select-btn::after {
+            content: '';
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 6px solid white;
+            transition: transform 0.3s ease;
+        }
+
+        .engine-select-btn.active::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        .engine-select-btn:hover {
+            background: #252547;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .engine-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            background: #1a1a2e;
+            border-radius: 16px;
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+        }
+
+        .engine-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .engine-option {
+            padding: 12px 16px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .engine-option:hover {
+            background: #2d2d5a;
+        }
+
+        .engine-option.selected {
+            background: #3d3d7a;
+        }
+
+        .shortcuts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+        }
+
+        .shortcut-btn {
+            padding: 14px 28px;
+            font-size: 15px;
+            font-weight: 500;
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .shortcut-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .shortcut-btn:active {
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 600px) {
+            .logo {
+                width: 140px;
+            }
+
+            .search-box {
+                padding: 16px 90px 16px 20px;
+                font-size: 16px;
+            }
+
+            .shortcuts {
+                gap: 12px;
+            }
+
+            .shortcut-btn {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="Logo.png" alt="SySearch Logo" class="logo">
+        
+        <div class="search-container">
+            <input type="text" class="search-box" id="searchInput" placeholder="搜索..." autofocus>
+            <div class="engine-select-wrapper">
+                <button class="engine-select-btn" id="engineBtn">Bing</button>
+                <div class="engine-dropdown" id="engineDropdown">
+                    <div class="engine-option selected" data-value="bing">Bing</div>
+                    <div class="engine-option" data-value="google">Google</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="shortcuts">
+            <a href="https://syserver.sy1.top/" class="shortcut-btn" target="_blank">SyServer</a>
+            <a href="https://ec.sy1.top/" class="shortcut-btn" target="_blank">Extends Create</a>
+            <a href="https://os.sy1.top/" class="shortcut-btn" target="_blank">Sy OS</a>
+            <a href="https://calendar.sy1.top/" class="shortcut-btn" target="_blank">SyCalendar</a>
+        </div>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const engineBtn = document.getElementById('engineBtn');
+        const engineDropdown = document.getElementById('engineDropdown');
+        const engineOptions = document.querySelectorAll('.engine-option');
+
+        let currentEngine = 'bing';
+
+        const searchEngines = {
+            bing: 'https://www.bing.com/search?q=',
+            google: 'https://www.google.com/search?q='
+        };
+
+        engineBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            engineDropdown.classList.toggle('show');
+            engineBtn.classList.toggle('active');
+        });
+
+        engineOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                currentEngine = this.dataset.value;
+                engineBtn.textContent = this.textContent;
+                engineOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                engineDropdown.classList.remove('show');
+                engineBtn.classList.remove('active');
+                searchInput.focus();
+            });
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!engineBtn.contains(e.target) && !engineDropdown.contains(e.target)) {
+                engineDropdown.classList.remove('show');
+                engineBtn.classList.remove('active');
+            }
+        });
+
+        function performSearch() {
+            const query = searchInput.value.trim();
+            if (query) {
+                window.location.href = searchEngines[currentEngine] + encodeURIComponent(query);
+            }
+        }
+
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+    </script>
+</body>
+</html>
