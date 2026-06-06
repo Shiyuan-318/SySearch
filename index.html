@@ -15,7 +15,6 @@
             min-height: 100vh;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -24,11 +23,20 @@
 
         .container {
             display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 60px;
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        .left-panel {
+            display: flex;
             flex-direction: column;
             align-items: center;
             gap: 40px;
-            max-width: 600px;
-            width: 100%;
+            flex: 1;
         }
 
         .logo {
@@ -43,9 +51,10 @@
         }
 
         .search-container {
-            width: 100%;
+            flex: 1;
             position: relative;
             z-index: 10;
+            max-width: 500px;
         }
 
         .search-box {
@@ -183,7 +192,21 @@
             transform: translateY(-1px);
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .left-panel {
+                gap: 30px;
+            }
+
+            .search-container {
+                max-width: 100%;
+                width: 100%;
+            }
+
             .logo {
                 width: 140px;
             }
@@ -206,7 +229,15 @@
 </head>
 <body>
     <div class="container">
-        <img src="Logo.png" alt="SySearch Logo" class="logo">
+        <div class="left-panel">
+            <img src="Logo.png" alt="SySearch Logo" class="logo">
+            <div class="shortcuts">
+                <a href="https://syserver.sy1.top/" class="shortcut-btn" target="_blank">SyServer</a>
+                <a href="https://ec.sy1.top/" class="shortcut-btn" target="_blank">Extends Create</a>
+                <a href="https://os.sy1.top/" class="shortcut-btn" target="_blank">Sy OS</a>
+                <a href="https://calendar.sy1.top/" class="shortcut-btn" target="_blank">SyCalendar</a>
+            </div>
+        </div>
         
         <div class="search-container">
             <input type="text" class="search-box" id="searchInput" placeholder="搜索..." autofocus>
@@ -217,13 +248,6 @@
                     <div class="engine-option" data-value="google">Google</div>
                 </div>
             </div>
-        </div>
-
-        <div class="shortcuts">
-            <a href="https://syserver.sy1.top/" class="shortcut-btn" target="_blank">SyServer</a>
-            <a href="https://ec.sy1.top/" class="shortcut-btn" target="_blank">Extends Create</a>
-            <a href="https://os.sy1.top/" class="shortcut-btn" target="_blank">Sy OS</a>
-            <a href="https://calendar.sy1.top/" class="shortcut-btn" target="_blank">SyCalendar</a>
         </div>
     </div>
 
